@@ -174,6 +174,53 @@ Go to Sketch > Include Library > Manage Libraries and search for the following l
 - DallasTemperature (for the DS18B20 temperature sensor).
 - OneWire (required for DallasTemperature).
 
-Final Connections
+## Wemos Device Configuration
+
+### Hardware Setup for Wemos_1
+The first Wemos device will be transmitting two values to the system: temperature and TDS.
+
+To connect the sensors to Wemos, use various methods (pin board or direct soldering). Ensure the contact is solid and there are no shorted pins.
+
+To connect the TDS sensor, connect the three wires from the sensor board to Wemos:
+- Ground
+- VCC (3.3V)
+- A0
+
+To connect the Dallas temperature sensor, connect it to:
+- GND
+- VCC (5V)
+- D4
+
+Also, a 4.7k resistor is needed to connect VCC and data wires.
+
+### Install the Arduino IDE
+1. Install the Arduino IDE on your computer.
+2. Configure it for the devices and sensors we are going to work with.
+3. Download the board package for ESP8266 and the libraries for Dallas sensor DS18B20.
+
+Connect the Wemos device to your computer over USB.
+
+Open an Arduino sketch from the repository for Wemos_1, compile the code, and upload it to the Wemos.
+
+Check the serial monitor; switch to 115200 baud, and you should see readings A: xx.xx for temperature and B: xxx.xx for TDS.
+
+### Hardware Setup for Wemos_2
+Now connect the remaining TSS sensor to another Wemos.
+
+Connection pins:
+- GND
+- VCC (3.3V)
+- A0
+
+The second Wemos is necessary since the Wemos D1 Mini has just one analog input pin. If using other Arduino boards with multiple analog inputs, this setup and the code would differ.
+
+Flash the sketch from the Wemos_2 folder onto the second Wemos device.
+
+Check the serial output; it should give C: XX for the analog value, D: XX.XX voltage, and C: XXXX for the TSS value.
+
+### Final Connections
 Connect both Wemos devices and the LoRa module to a USB hub and connect it to the Raspberry Pi.
+
 Reboot the Raspberry Pi. The script will identify the devices by their output and create a config file mapping ttyUSB ports, which is in the usb_order.config file.
+
+When the watcher service starts, it will send an email to a preconfigured address with the credentials. If using Gmail, generate an access token for this application and insert it into the code. The email will contain the internal and external IPs of the Raspberry Pi and a log file of the watcher service.
