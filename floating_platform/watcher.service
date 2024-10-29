@@ -1,0 +1,13 @@
+[Unit]
+Description=Run watcher.py at boot with a delay
+After=network.target
+
+[Service]
+ExecStart=/bin/bash -c 'sleep 60; /usr/bin/python /home/sensor/watcher.py'
+WorkingDirectory=/home/sensor/
+StandardOutput=journal
+StandardError=journal
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

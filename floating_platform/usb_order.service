@@ -1,0 +1,15 @@
+  GNU nano 7.2                                                               /etc/systemd/system/watcher.service                                                                  M     
+[Unit]
+Description=Run watcher.py at boot with a delay
+After=network.target
+
+[Service]
+ExecStart=/bin/bash -c 'sleep 30; /usr/bin/python /home/sensor/usb_order.py'
+WorkingDirectory=/home/sensor/
+StandardOutput=journal
+StandardError=journal
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
