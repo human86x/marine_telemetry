@@ -71,6 +71,8 @@ This project is a proof-of-concept for a marine telemetry IoT system that monito
 
 ## Setup Guide
 
+## Floating Platform
+
 ### Prerequisites
 
 1. **Install Raspberry Pi OS** on a microSD card. 
