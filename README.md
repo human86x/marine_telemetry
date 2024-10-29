@@ -77,4 +77,3 @@ Ensure the following hardware is set up and ready:
 
 ---
 
-Add further setup details, calibration instructions, and testing notes as necessary to ensure smooth deployment and data collection in the field.
