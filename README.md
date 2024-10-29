@@ -171,42 +171,85 @@ Ensure the following hardware is set up and ready:
 
 ### Wemos Device Configuration
 
-#### Wemos_1 Setup
+#### Prerequisite: Arduino IDE Installation and Configuration
 
-1. The first Wemos device will transmit two values: temperature and TDS.
-2. Connect the sensors to Wemos using solid connections (either via a pin board or soldering).
+1. **Install the Arduino IDE** on your computer.
+2. **Add ESP8266 Board Support**:
+   - Go to **File > Preferences**.
+   - In the "Additional Board Manager URLs" field, add the following URL:
+     ```
+     http://arduino.esp8266.com/stable/package_esp8266com_index.json
+     ```
+   - Go to **Tools > Board > Board Manager**, search for "ESP8266," and install the ESP8266 board package.
+3. **Install Required Libraries**:
+   - Go to **Sketch > Include Library > Manage Libraries** and search for the following libraries:
+     - **DallasTemperature** (for the DS18B20 temperature sensor).
+     - **OneWire** (required for DallasTemperature).
+   - Install these libraries to enable sensor functionality on the Wemos devices.
 
-   **TDS Sensor Connections:**
-   - GND
+---
+
+#### Wemos 1 Setup
+
+##### Hardware Setup
+
+1. **Connect the TDS Sensor** to Wemos 1:
+   - GND (Ground)
    - VCC (3.3V)
-   - A0
+   - A0 (Analog Pin)
 
-   **Dallas Temperature Sensor Connections:**
-   - GND
+2. **Connect the Dallas Temperature Sensor** (DS18B20) to Wemos 1:
+   - GND (Ground)
    - VCC (5V)
-   - D4
-   - Connect a 4.7k resistor between VCC and the data wire.
+   - D4 (Data Pin)
+   - Connect a **4.7k ohm resistor** between VCC and the data pin of the DS18B20 sensor.
 
-3. **Install the Arduino IDE** on your computer.
-   - Download the board package for ESP8266 and libraries for the Dallas DS18B20 sensor.
-   - Connect the Wemos device to your computer via USB.
-   - Open the Arduino sketch for `wemos_1`, compile the code, and upload it to the Wemos.
-   - Check the serial monitor (set to 115200 baud) to verify data transmission. You should see:
-     - A: xx.xx for temperature
-     - B: xxx.xx for TDS
+##### Software Setup
 
-#### Wemos_2 Setup
+1. **Open the Wemos 1 Arduino Sketch**:
+   - Locate and open the `wemos_1` sketch in the Arduino IDE.
+2. **Select the Board and Port**:
+   - Set the board to **LOLIN(WEMOS) D1 R2 & mini** under **Tools > Board**.
+   - Select the correct **Port**.
+3. **Compile and Upload**:
+   - Compile the sketch and upload it to Wemos 1.
+4. **Verify Data Transmission**:
+   - Open the **Serial Monitor** (set to **115200 baud**) to check data. You should see output similar to:
+     ```
+     A: xx.xx  (temperature in °C)
+     B: xxx.xx (TDS value in ppm)
+     ```
 
-1. Connect the TSS sensor to the second Wemos device using the following connections:
-   - GND
+---
+
+#### Wemos 2 Setup
+
+##### Hardware Setup
+
+1. **Connect the TSS Sensor** to Wemos 2:
+   - GND (Ground)
    - VCC (3.3V)
-   - A0
+   - A0 (Analog Pin)
 
-2. Flash the sketch from the `wemos_2` folder onto the second Wemos device.
-3. Check the serial output to confirm it provides:
-   - C: XX for the analog value
-   - D: XX.XX for voltage
-   - E: XXXX for TSS value
+##### Software Setup
+
+1. **Open the Wemos 2 Arduino Sketch**:
+   - Locate and open the `wemos_2` sketch in the Arduino IDE.
+2. **Select the Board and Port**:
+   - Set the board to **LOLIN(WEMOS) D1 R2 & mini** under **Tools > Board**.
+   - Select the correct **Port**.
+3. **Compile and Upload**:
+   - Compile the sketch and upload it to Wemos 2.
+4. **Verify Data Transmission**:
+   - Open the **Serial Monitor** (set to **115200 baud**) to check data. You should see output similar to:
+     ```
+     C: XX    (analog value)
+     D: XX.XX (voltage)
+     E: XXXX  (TSS value in mg/L)
+     ```
+
+---
+
 
 ### Final Connections
 
