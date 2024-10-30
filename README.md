@@ -79,124 +79,47 @@ This project is a proof-of-concept for a marine telemetry IoT system that monito
    - Ensure Wi-Fi credentials are configured so you can access the Pi on the same network.
    - Activate SSH for remote access.
 
+2. **Arduino IDE** Installation and Configuration
+   - Install the Arduino IDE on your computer.
+   - Add ESP8266 Board Support:
+         Go to File > Preferences.
+         In the "Additional Board Manager URLs" field, add:
+         ```url
+               http://arduino.esp8266.com/stable/package_esp8266com_index.json
+         ```
+         Go to Tools > Board > Board Manager, search for "ESP8266," and install the ESP8266 board package.
+
+   - Install Required Libraries:
+
+      Go to Sketch > Include Library > Manage Libraries and search for the following libraries:
+         - DallasTemperature (for the DS18B20 temperature sensor).
+         - OneWire (required for DallasTemperature).
+
 ### Hardware Setup
 
-1. **Power the Raspberry Pi** using a solar power bank. 
-2. Wait a couple of minutes, then use another device to get a list of connected devices on the network to identify the Raspberry Pi's IP address:
-   ```bash
-   nmap -sP xxx.xxx.xxx.0/24
-
-Connect to the Raspberry Pi using SSH:
-```bash
-ssh -p 22 username@xxx.xxx.xxx.xxx
-```
-
-File Transfer
-After a successful connection, copy the floating platform Python files to the user directory:
-```bash
-scp username@<IP Address of Raspberry Pi>:<Path to File> .
-```
-
-Configure Services on Raspberry Pi
-Create a service file for usb_order.py
-Navigate to /etc/systemd/system/ and create a file named usb_order.service:
-```
-[Unit]
-Description=Run usb_order.py at boot with a delay
-After=network.target
-
-[Service]
-ExecStart=/bin/bash -c 'sleep 30; /usr/bin/python /home/sensor/usb_order.py'
-WorkingDirectory=/home/sensor/
-StandardOutput=journal
-StandardError=journal
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Create a service file for watcher.py
-In the same folder, create another file named watcher.service:
-```
-[Unit]
-Description=Run watcher.py at boot with a delay
-After=network.target
-
-[Service]
-ExecStart=/bin/bash -c 'sleep 60; /usr/bin/python /home/sensor/watcher.py'
-WorkingDirectory=/home/sensor/
-StandardOutput=journal
-StandardError=journal
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Enable the services:
-```bash
-sudo systemctl enable usb_order.service
-sudo systemctl enable watcher.service
-sudo systemctl daemon-reload
-```
-
-Python Environment Setup
-Prepare the Python environment for the scripts.
-
-Install the necessary library on the floating platform: pyserial, which is essential for communicating with the LoRa and Wemos devices.
-
-Install it using your preferred method (pip or apt):
-```bash
-pip install pyserial
-```
-or
-```bash
-sudo apt install python3-pyserial
-```
-
-Wemos Device Configuration
-Prerequisite: Arduino IDE Installation and Configuration
-Install the Arduino IDE on your computer.
-
-Add ESP8266 Board Support:
-
-Go to File > Preferences.
-In the "Additional Board Manager URLs" field, add:
-```url
-http://arduino.esp8266.com/stable/package_esp8266com_index.json
-```
-Go to Tools > Board > Board Manager, search for "ESP8266," and install the ESP8266 board package.
-
-Install Required Libraries:
-
-Go to Sketch > Include Library > Manage Libraries and search for the following libraries:
-- DallasTemperature (for the DS18B20 temperature sensor).
-- OneWire (required for DallasTemperature).
 
 ## Wemos Device Configuration
 
-### Hardware Setup for Wemos_1
+### Setup for Wemos_1
+
 The first Wemos device will be transmitting two values to the system: temperature and TDS.
 
 To connect the sensors to Wemos, use various methods (pin board or direct soldering). Ensure the contact is solid and there are no shorted pins.
 
 To connect the TDS sensor, connect the three wires from the sensor board to Wemos:
-- Ground
+
+- GND
 - VCC (3.3V)
 - A0
 
 To connect the Dallas temperature sensor, connect it to:
+
 - GND
 - VCC (5V)
 - D4
 
 Also, a 4.7k resistor is needed to connect VCC and data wires.
 
-### Install the Arduino IDE
-1. Install the Arduino IDE on your computer.
-2. Configure it for the devices and sensors we are going to work with.
-3. Download the board package for ESP8266 and the libraries for Dallas sensor DS18B20.
 
 Connect the Wemos device to your computer over USB.
 
@@ -204,10 +127,12 @@ Open an Arduino sketch from the repository for Wemos_1, compile the code, and up
 
 Check the serial monitor; switch to 115200 baud, and you should see readings A: xx.xx for temperature and B: xxx.xx for TDS.
 
-### Hardware Setup for Wemos_2
+### Setup for Wemos_2
+
 Now connect the remaining TSS sensor to another Wemos.
 
 Connection pins:
+
 - GND
 - VCC (3.3V)
 - A0
@@ -218,9 +143,185 @@ Flash the sketch from the Wemos_2 folder onto the second Wemos device.
 
 Check the serial output; it should give C: XX for the analog value, D: XX.XX voltage, and C: XXXX for the TSS value.
 
+### Raspberry Pi Configuration
+
+
+1. **Power the Raspberry Pi** using a solar power bank. 
+2. Wait a couple of minutes, then use another device to get a list of connected devices on the network to identify the Raspberry Pi's IP address:
+   ```bash
+   
+   nmap -sP xxx.xxx.xxx.0/24
+
+3. Connect to the Raspberry Pi using SSH:
+   ```bash
+
+   ssh -p 22 username@xxx.xxx.xxx.xxx
+   ```
+
+4. After a successful connection, copy the floating platform Python files to the user directory:
+   ```bash
+   scp username@<IP Address of Raspberry Pi>:<Path to File> .
+   ```
+
+5. Configure Services on Raspberry Pi
+   - Create a service file for usb_order.py
+      Navigate to /etc/systemd/system/ and create a file named usb_order.service:
+      ```
+      [Unit]
+      Description=Run usb_order.py at boot with a delay
+      After=network.target
+
+      [Service]
+      ExecStart=/bin/bash -c 'sleep 30; /usr/bin/python /home/sensor/usb_order.py'
+      WorkingDirectory=/home/sensor/
+      StandardOutput=journal
+      StandardError=journal
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+      ```
+
+   - Create a service file for watcher.py
+      In the same folder, create another file named watcher.service:
+      ```
+      [Unit]
+      Description=Run watcher.py at boot with a delay
+      After=network.target
+
+      [Service]
+      ExecStart=/bin/bash -c 'sleep 60; /usr/bin/python /home/sensor/watcher.py'
+      WorkingDirectory=/home/sensor/
+      StandardOutput=journal
+      StandardError=journal
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+      ```
+
+   - Enable the services:
+      ```bash
+      sudo systemctl enable usb_order.service
+      sudo systemctl enable watcher.service
+      sudo systemctl daemon-reload
+      ```
+
+ 6. Python Environment Setup
+   - Prepare the Python environment for the scripts.
+      Install the necessary library on the floating platform: pyserial, which is essential for communicating with the LoRa and Wemos devices.
+
+      Install it using your preferred method (pip or apt):
+      ```bash
+      pip install pyserial
+      ```
+      or
+      ```bash
+      sudo apt install python3-pyserial
+      ```
+
+
+
 ### Final Connections
 Connect both Wemos devices and the LoRa module to a USB hub and connect it to the Raspberry Pi.
 
 Reboot the Raspberry Pi. The script will identify the devices by their output and create a config file mapping ttyUSB ports, which is in the usb_order.config file.
 
 When the watcher service starts, it will send an email to a preconfigured address with the credentials. If using Gmail, generate an access token for this application and insert it into the code. The email will contain the internal and external IPs of the Raspberry Pi and a log file of the watcher service.
+
+
+## On-shore Platform
+
+### Prerequisites
+
+1. **Install Raspberry Pi OS** on a microSD card. 
+   - Ensure Wi-Fi credentials are configured so you can access the Pi on the same network.
+   - Activate SSH for remote access.
+
+### Raspberry Pi Configuration
+
+
+1. **Power the Raspberry Pi** using a solar power bank. 
+2. Wait a couple of minutes, then use another device to get a list of connected devices on the network to identify the Raspberry Pi's IP address:
+   ```bash
+   
+   nmap -sP xxx.xxx.xxx.0/24
+
+3. Connect to the Raspberry Pi using SSH:
+   ```bash
+
+   ssh -p 22 username@xxx.xxx.xxx.xxx
+   ```
+
+4. After a successful connection, copy the on-shore platform Python files to the user directory:
+   ```bash
+   scp username@<IP Address of Raspberry Pi>:<Path to File> .
+   ```
+
+5. Configure Services on Raspberry Pi
+   
+   - Create a service file for watcher.py
+      In the same folder, create another file named watcher.service:
+      ```
+      [Unit]
+      Description=Run watcher.py at boot with a delay
+      After=network.target
+
+      [Service]
+      ExecStart=/bin/bash -c 'sleep 60; /usr/bin/python /home/onshore/watcher.py'
+      WorkingDirectory=/home/onshore/
+      StandardOutput=journal
+      StandardError=journal
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+      ```
+
+   - Enable the service:
+      ```bash
+      sudo systemctl enable watcher.service
+      sudo systemctl daemon-reload
+      ```
+
+ 6. Python Environment Setup
+   - Prepare the Python environment for the scripts.
+      Install the necessary library pyserial, which is needed for communication with the LoRa device.
+
+      Install it using your preferred method (pip or apt):
+      ```bash
+      pip install pyserial
+      ```
+      or
+      ```bash
+      sudo apt install python3-pyserial
+      ```
+
+   7. Install the MQTT broker
+      ```bash
+      sudo apt install mosquitto
+      ```
+      
+### Final Connections
+
+Connect the LoRa module to a USB port on the Raspberry Pi.
+
+Reboot the Raspberry Pi. 
+
+When the watcher service starts, it will as well send an email to a preconfigured address. The email will contain also the internal and external IPs of the Raspberry Pi and a log file of the watcher service.
+
+## Observational Center
+
+At the moment data monitoring tools that are used on the observational center could vary. 
+- MQTT Explorer app (cross platform)
+- mqtt_sub_graph2.py script included in the repository
+- Or any other MQTT subscriber with clear graph data representation.
+
+## Final Notes
+
+- After successfully connecting and configuring all devices, upon boot, you should receive confirmation emails indicating that the system is fully operational.
+
+- The Raspberry Pi on the on-shore platform will send AT commands to the LoRa device over a serial connection, putting it in receiving mode to await incoming LoRa messages. It will identify each message upon reception and repost it to the appropriate MQTT broker topic.
+- After boot, the Raspberry Pi on the floating platform will read serial data from both Wemos devices and retransmit it to other LoRa devices via the LoRa device’s serial connection using AT commands.
+
+  
