@@ -9,7 +9,7 @@ from datetime import datetime
 # Configuration
 script_name = 'lora_sender_tss3.py'
 email_address = 'lorasensorone@gmail.com'  # Your Gmail address
-email_password = 'zzwa bngy hjgs quju'  # Your Gmail App Password
+email_password = 'xxxx xxxx xxxx xxxx'  # Your Gmail App Password
 log_file = '/home/sensor/watcher_log.txt'  # Log file path
 log_interval = 120  # Interval for emailing the log in seconds (2 minutes)
 
@@ -22,7 +22,12 @@ def log_message(message):
     print(log_entry.strip())
     with open(log_file, 'a') as f:
         f.write(log_entry)
-
+#
+#   The email and log parts are just a sketch for now, and will be properly implemented
+#   at the next stage of the project
+#   
+#   
+#
 def get_internal_ip():
     """Get the internal IP address."""
     return socket.gethostbyname(socket.gethostname())

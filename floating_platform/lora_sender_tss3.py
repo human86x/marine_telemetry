@@ -55,8 +55,9 @@ e5 = setup_connection()
 
 # Set up the LoRa module
 send_command(e5, "AT")  # Test AT command
-send_command(e5, "AT+MODE=TEST")  # Set to TEST mode
-
+send_command(e5, "AT+MODE=TEST")  # Set to TEST mode 
+#At this stage we have been using only the test mode for the comunication, further development will use P2P
+#
 # Keep sending the temperature, TDS, and TSS via LoRa indefinitely
 try:
     while True:
