@@ -118,7 +118,17 @@ To connect the Dallas temperature sensor, connect it to:
 - VCC (5V)
 - D4
 
+
+
+![Wemos d1 mini pinout](images/wemos_pinout.webp)
+
+
+
 Also, a 4.7k resistor is needed to connect VCC and data wires.
+
+
+![Wemos d1 mini pinout](images/resistor.png)
+
 
 
 Connect the Wemos device to your computer over USB.
@@ -146,6 +156,15 @@ The second Wemos is necessary since the Wemos D1 Mini has just one analog input 
 Flash the sketch from the Wemos_2 folder onto the second Wemos device.
 
 Check the serial output; it should give C: XX for the analog value, D: XX.XX voltage, and C: XXXX for the TSS value.
+
+
+
+![Wemos d1 mini pinout](images/wemos_tds_dallas2.jpeg)
+
+
+
+
+
 
 ### Raspberry Pi Configuration
 
@@ -320,6 +339,15 @@ At the moment data monitoring tools that are used on the observational center co
 - MQTT Explorer app (cross platform)
 - mqtt_sub_graph2.py script included in the repository
 - Or any other MQTT subscriber with clear graph data representation.
+
+
+
+![Wemos_1 - Recieving TDS and Temperature values over Lora](images/tds_temp_working.mp4)
+
+
+![Wemoos_1 – data fetched by Python script over MQTT using matplotlib](images/readings_tds_temp.jpeg)
+
+
 
 ## Final Notes
 
