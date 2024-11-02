@@ -1,4 +1,4 @@
-# Marine Telemetry IoT System
+﻿# Marine Telemetry IoT System
 
 ## Project Overview
 
@@ -122,6 +122,10 @@ Also, a 4.7k resistor is needed to connect VCC and data wires.
 
 
 Connect the Wemos device to your computer over USB.
+
+
+![Both sensors connected to wemos](images/wemos_tds_dallas.jpeg)
+
 
 Open an Arduino sketch from the repository for Wemos_1, compile the code, and upload it to the Wemos.
 
