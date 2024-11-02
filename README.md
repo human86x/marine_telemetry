@@ -135,7 +135,7 @@ Connect the Wemos device to your computer over USB.
 
 
 ![Both sensors connected to wemos](images/wemos_tds_dallas.jpeg)
-
+![Both sensors submerged in water](images/wemos_tds_dallas2.jpeg)
 
 Open an Arduino sketch from the repository for Wemos_1, compile the code, and upload it to the Wemos.
 
@@ -156,11 +156,6 @@ The second Wemos is necessary since the Wemos D1 Mini has just one analog input 
 Flash the sketch from the Wemos_2 folder onto the second Wemos device.
 
 Check the serial output; it should give C: XX for the analog value, D: XX.XX voltage, and C: XXXX for the TSS value.
-
-
-
-![Wemos d1 mini pinout](images/wemos_tds_dallas2.jpeg)
-
 
 
 
@@ -343,6 +338,11 @@ At the moment data monitoring tools that are used on the observational center co
 
 
 ![Wemos_1 - Recieving TDS and Temperature values over Lora](images/tds_temp_working.mp4)
+
+
+<video src="images/tds_temp_working.mp4" controls width="500">
+  Your browser does not support the video tag.
+</video>
 
 
 ![Wemoos_1 – data fetched by Python script over MQTT using matplotlib](images/readings_tds_temp.jpeg)
