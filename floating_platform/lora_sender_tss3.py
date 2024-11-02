@@ -23,7 +23,7 @@ def setup_connection():
     """Establish a serial connection to the LoRa module."""
     try:
         e5 = serial.Serial(SERIAL_PORT, baudrate=BAUD_RATE, timeout=2)
-        time.sleep(2)  # Allow some time for the connection to establish
+        time.sleep(1)  # Allow some time for the connection to establish
         print(f"Connected to LoRa module on {SERIAL_PORT}")
         return e5
     except Exception as e:
@@ -33,7 +33,7 @@ def setup_connection():
 def send_command(e5, command):
     """Send an AT command to the Wio E5 module and read the response."""
     e5.write(f"{command}\r\n".encode('utf-8'))  # Send command
-    time.sleep(0.5)  # Delay for the module to respond
+    time.sleep(1)  # Delay for the module to respond
     response = e5.read_all()  # Read response as bytes
     try:
         decoded_response = response.decode('utf-8')  # Attempt to decode as UTF-8
@@ -99,7 +99,7 @@ try:
                     e5 = setup_connection()  # Re-establish the connection
                     break  # Exit the for loop to start sending again
 
-        time.sleep(5)  # Wait for a bit before the next reading
+        time.sleep(0)  # Wait for a bit before the next reading
 
 except KeyboardInterrupt:
     print("Program terminated")

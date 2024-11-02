@@ -1,30 +1,47 @@
-// Pin definition for Wemos D1 Mini
-#define TdsSensorPin A0  // Connect the analog output pin (AOUT) of the TDS sensor to A0
+#include <OneWire.h>
+#include <DallasTemperature.h>
 
-// Calibration values
-float VREF = 5.0;  // Reference voltage of the Wemos D1 Mini (5V)
-float ADC_RESOLUTION = 1024.0;  // ADC resolution (10-bit)
+// Pin configuration
+#define ONE_WIRE_BUS D2  // Digital pin for Dallas temperature sensor
+#define TDS_PIN A0       // Analog pin for TDS sensor
 
-float Temperature = 25;  // Temperature compensation for the TDS calculation
-float AnalogValue = 0;  // Variable to store the analog value from the sensor
-float Voltage = 0;  // Voltage corresponding to the analog value
-float TdsValue = 0;  // Final TDS value
+// Dallas Temperature setup
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+
+// Constants for TDS sensor
+const float VREF = 3.3;             // Analog reference voltage
+const int SAMPLES = 30;             // Number of samples for smoothing
+const float TDS_FACTOR = 0.5;       // TDS calibration factor for the sensor
 
 void setup() {
-  Serial.begin(115200);  // Start the serial communication
+  Serial.begin(9600);
+  sensors.begin();
 }
 
 void loop() {
-  AnalogValue = analogRead(TdsSensorPin);  // Read the analog value from the sensor
-  Voltage = AnalogValue * (VREF / ADC_RESOLUTION);  // Convert analog value to voltage
-  
-  // The TDS sensor equation to calculate TDS value
-  // TDS = (Voltage in mV) * 500 / VREF / (1 + 0.02 * (Temperature - 25))
-  TdsValue = (Voltage * 500 / VREF) / (1 + 0.02 * (Temperature - 25)); 
-  
-  Serial.print("TDS Value: ");
-  Serial.print(TdsValue, 2);  // Print TDS value with 2 decimal places
-  Serial.println(" ppm");
+  // Read temperature from Dallas sensor
+  sensors.requestTemperatures();
+  float tempC = sensors.getTempCByIndex(0);
 
-  delay(1000);  // Wait for 1 second before reading again
+  // Read TDS sensor
+  int analogValue = 0;
+  for (int i = 0; i < SAMPLES; i++) {  // Take multiple readings for averaging
+    analogValue += analogRead(TDS_PIN);
+  }
+  analogValue /= SAMPLES;
+
+  // Convert analog value to voltage
+  float voltage = analogValue * (VREF / 1024.0);
+  
+  // Convert voltage to TDS in ppm (parts per million)
+  float tdsValue = (voltage * TDS_FACTOR) * 1000;  // Adjust based on calibration
+
+  // Print formatted serial output
+  Serial.print("A:");
+  Serial.print(tempC, 2);  // Print temperature with 2 decimal points
+  Serial.print(" B:");
+  Serial.println(tdsValue, 2);  // Print TDS with 2 decimal points
+
+  delay(2000);  // Wait 2 seconds before the next reading
 }

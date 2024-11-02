@@ -1,6 +1,6 @@
 import serial
 import time
-import pyudev
+import os
 
 # Replace with the vendor ID of your LoRa module
 LORA_VENDOR_ID = '10c4'  # e.g., 'xxxx'
@@ -10,12 +10,12 @@ LORA_SERIAL_NUMBER = None  # Leave as None if not using a specific serial number
 WEMOS_BAUD_RATE = 115200
 
 def detect_lora_port():
-    context = pyudev.Context()
-    for device in context.list_devices(subsystem='tty'):
-        # Check if the device matches the LoRa vendor ID
-        if device.get('ID_VENDOR_ID') == LORA_VENDOR_ID:
-            if LORA_SERIAL_NUMBER is None or device.get('ID_SERIAL') == LORA_SERIAL_NUMBER:
-                return device.device_node  # Return the device node (e.g., /dev/ttyUSB0)
+    # Check the /dev directory for USB devices
+    for device in os.listdir('/dev'):
+        if device.startswith('ttyUSB'):
+            # You can add checks here to match the vendor ID or serial number if needed
+            # This is a placeholder; actual implementation would require parsing vendor info
+            return f"/dev/{device}"  # Return the device node (e.g., /dev/ttyUSB0)
     return None
 
 def try_connect(port, baud_rate, command):
@@ -42,26 +42,27 @@ def main():
     wemos_a_b_port = None
     wemos_c_d_e_port = None
 
-    available_ports = [port for port in pyudev.Context().list_devices(subsystem='tty') if port.device_node.startswith('/dev/ttyUSB')]
+    # Check for available ttyUSB devices
+    available_ports = [f"/dev/{port}" for port in os.listdir('/dev') if port.startswith('ttyUSB')]
 
     for port in available_ports:
         # Try connecting to the first Wemos device
-        print(f"Trying to connect to {port.device_node} for Wemos device A...")
-        response = try_connect(port.device_node, WEMOS_BAUD_RATE, "")
+        print(f"Trying to connect to {port} for Wemos device A...")
+        response = try_connect(port, WEMOS_BAUD_RATE, "")
         
         if response is not None and "A:" in response and "B:" in response:
-            wemos_a_b_port = port.device_node
-            print(f"Connected to Wemos device A on {port.device_node}")
+            wemos_a_b_port = port
+            print(f"Connected to Wemos device A on {port}")
             print(f"Output: {response}")
             continue  # Move to the next port
 
         # Try connecting to the second Wemos device
-        print(f"Trying to connect to {port.device_node} for Wemos device B...")
-        response = try_connect(port.device_node, WEMOS_BAUD_RATE, "")
+        print(f"Trying to connect to {port} for Wemos device B...")
+        response = try_connect(port, WEMOS_BAUD_RATE, "")
         
         if response is not None and "C:" in response and "D:" in response and "E:" in response:
-            wemos_c_d_e_port = port.device_node
-            print(f"Connected to Wemos device B on {port.device_node}")
+            wemos_c_d_e_port = port
+            print(f"Connected to Wemos device B on {port}")
             print(f"Output: {response}")
             continue
 

@@ -1,15 +1,25 @@
 import serial
 
-# Set the port and baud rate to the correct values
-PORT = '/dev/ttyUSB0'  # Adjust to the correct port
-BAUD_RATE = 115200  # Set your baud rate as needed
+# Function to read the configuration file and get the port
+def read_config():
+    config = {}
+    try:
+        with open('usb_order.config', 'r') as config_file:
+            for line in config_file:
+                key, value = line.strip().split('=')
+                config[key] = value
+    except FileNotFoundError:
+        print("Configuration file not found.")
+    except Exception as e:
+        print(f"Error reading configuration file: {e}")
+    return config
 
-def read_sensor_data():
+def read_sensor_data(port):
     """Reads temperature and TDS values from the serial port."""
     try:
         # Open the serial port with a timeout
-        ser = serial.Serial(PORT, BAUD_RATE, timeout=1)  # 1-second timeout
-        print(f"Connected to {PORT}")
+        ser = serial.Serial(port, 115200, timeout=1)  # 1-second timeout
+        print(f"Connected to {port}")
 
         temperature = None
         tds_value = None
@@ -29,7 +39,7 @@ def read_sensor_data():
                         temperature = decoded_line.split(":")[1].strip()  # Extract temperature value
                         print(f"Temperature: {temperature} °C")
 
-                    # Check if the line contains TDS data ("TDS:")
+                    # Check if the line contains TDS data ("B:")
                     elif decoded_line.startswith("B:"):
                         tds_value = decoded_line.split(":")[1].strip()  # Extract TDS value
                         print(f"TDS Value: {tds_value} ppm")
@@ -53,7 +63,17 @@ def read_sensor_data():
         # Close the serial port if open
         if ser.is_open:
             ser.close()
-            print(f"Closed connection to {PORT}")
+            print(f"Closed connection to {port}")
 
-# Call the function to start reading data
-#read_sensor_data()
+# Main logic
+if __name__ == "__main__":
+    # Read the configuration to get the correct port
+    config = read_config()
+    PORT = config.get('WEMOS_A_B_PORT')  # Get the port for Wemos A and B
+    BAUD_RATE = 115200  # Set your baud rate as needed
+
+    # Call the function to start reading data
+    if PORT:
+        read_sensor_data(PORT)
+    else:
+        print("Port not found in configuration.")
