@@ -336,15 +336,7 @@ At the moment data monitoring tools that are used on the observational center co
 - Or any other MQTT subscriber with clear graph data representation.
 
 
-
-![Wemos_1 - Recieving TDS and Temperature values over Lora](images/tds_temp_working.mp4)
-
-
-<video src="images/tds_temp_working.mp4" controls width="500">
-  Your browser does not support the video tag.
-</video>
-
-
+![Wemoos_1 – Data send and received using Python scripts and SSH to monitor and deploy the code onto the devices](images/tds_temp_lora.gif)
 ![Wemoos_1 – data fetched by Python script over MQTT using matplotlib](images/readings_tds_temp.jpeg)
 
 
