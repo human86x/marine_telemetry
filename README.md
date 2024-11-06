@@ -26,6 +26,9 @@ This project is a proof-of-concept for a marine telemetry IoT system that monito
 - **Current Status**: 
    - Devices are housed in makeshift enclosures for testing, with sensors in water containers. Deployment on water is pending further testing.
 
+![System overview](images/presentation/presentation_2.png)
+
+
 ---
 
 ## System Architecture
