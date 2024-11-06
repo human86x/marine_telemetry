@@ -261,8 +261,8 @@ Reboot the Raspberry Pi. The script will identify the devices by their output an
 
 When the watcher service starts, it will send an email to a preconfigured address with the credentials. If using Gmail, generate an access token for this application and insert it into the code. The email will contain the internal and external IPs of the Raspberry Pi and a log file of the watcher service.
 
-![System overview](images/floating_2.png)
-![System overview](images/floating_3.png)
+![System overview](images/floating_2.jpg)
+![System overview](images/floating_3.jpg)
 
 ## On-shore Platform
 
@@ -361,9 +361,9 @@ At the moment data monitoring tools that are used on the observational center co
 
 ## Final Notes
 
-![System overview](images/floating_3.png)
+![System overview](images/floating_3.jpg)
 
-![System overview](images/comunication.png)
+![System overview](images/comunication.gif)
 
 - After successfully connecting and configuring all devices, upon boot, you should receive confirmation emails indicating that the system is fully operational.
 
