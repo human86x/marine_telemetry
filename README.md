@@ -355,13 +355,12 @@ At the moment data monitoring tools that are used on the observational center co
 
 
 ![Wemoos_1 – Data send and received using Python scripts and SSH to monitor and deploy the code onto the devices](images/tds_temp_lora.gif)
-![Wemoos_1 – data fetched by Python script over MQTT using matplotlib](images/readings_tds_temp.jpeg)
+
+![Wemoos_1 – data fetched by Python script over MQTT using matplotlib](images/readings.png)
 
 
 
 ## Final Notes
-
-![System overview](images/floating_3.jpg)
 
 When data is transmitted and received, the blue lights will blink continuously.
 
