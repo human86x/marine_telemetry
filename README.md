@@ -253,10 +253,16 @@ Check the serial output; it should give C: XX for the analog value, D: XX.XX vol
 ### Final Connections
 Connect both Wemos devices and the LoRa module to a USB hub and connect it to the Raspberry Pi.
 
+
+![System overview](images/overall.gif)
+
+
 Reboot the Raspberry Pi. The script will identify the devices by their output and create a config file mapping ttyUSB ports, which is in the usb_order.config file.
 
 When the watcher service starts, it will send an email to a preconfigured address with the credentials. If using Gmail, generate an access token for this application and insert it into the code. The email will contain the internal and external IPs of the Raspberry Pi and a log file of the watcher service.
 
+![System overview](images/floating_2.png)
+![System overview](images/floating_3.png)
 
 ## On-shore Platform
 
@@ -332,6 +338,8 @@ When the watcher service starts, it will send an email to a preconfigured addres
       
 ### Final Connections
 
+![System overview](images/onshore.jpg)
+
 Connect the LoRa module to a USB port on the Raspberry Pi.
 
 Reboot the Raspberry Pi. 
@@ -352,6 +360,10 @@ At the moment data monitoring tools that are used on the observational center co
 
 
 ## Final Notes
+
+![System overview](images/floating_3.png)
+
+![System overview](images/comunication.png)
 
 - After successfully connecting and configuring all devices, upon boot, you should receive confirmation emails indicating that the system is fully operational.
 
