@@ -363,6 +363,8 @@ At the moment data monitoring tools that are used on the observational center co
 
 ![System overview](images/floating_3.jpg)
 
+When data is transmitted and received, the blue lights will blink continuously.
+
 ![System overview](images/comunication.gif)
 
 - After successfully connecting and configuring all devices, upon boot, you should receive confirmation emails indicating that the system is fully operational.
