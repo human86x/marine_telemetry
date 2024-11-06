@@ -4,6 +4,8 @@
 
 This project is a proof-of-concept for a marine telemetry IoT system that monitors environmental data remotely using a **floating platform**, **onshore platform**, and an **observational center**. The floating platform collects real-time data on temperature, Total Dissolved Solids (TDS), and Total Suspended Solids (TSS) using various sensors, then transmits it via LoRa to the onshore platform for processing and future analysis.
 
+![System overview](images/presentation/presentation.png)
+
 [![Watch the video](https://img.youtube.com/vi/xaF3v0I2ETI/maxresdefault.jpg)](https://www.youtube.com/watch?v=xaF3v0I2ETI)
 
 ---
