@@ -373,4 +373,13 @@ When data is transmitted and received, the blue lights will blink continuously.
 - The Raspberry Pi on the on-shore platform will send AT commands to the LoRa device over a serial connection, putting it in receiving mode to await incoming LoRa messages. It will identify each message upon reception and repost it to the appropriate MQTT broker topic.
 - After boot, the Raspberry Pi on the floating platform will read serial data from both Wemos devices and retransmit it to other LoRa devices via the LoRa device’s serial connection using AT commands.
 
-  
+## Real-Time Data Overview
+
+This repository includes a `RealTime.md` file, which contains an up-to-date link to a real-time dashboard. The dashboard is powered by a Dash application with a Leaflet map that displays data in real time. The data is continuously updated by a Python script that reads MQTT data from the onshore platform's broker.
+
+### RealTime.md
+
+The `RealTime.md` file serves as a reference for accessing the latest dashboard link. This link connects to a server where the dashboard visualizes real-time information. Please note that dashboard performance may vary based on the server's bandwidth.
+
+For live data visualization and location tracking, please refer to the link provided in `RealTime.md`.
+
